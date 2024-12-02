@@ -100,7 +100,7 @@ const sortedBooks = [...filteredBooks].sort((a, b) => {
             <BootstrapTable striped bordered hover variant="light">
               <thead>
                 <tr className="table-header" style={{ backgroundColor: "#16a085", color: "white" }}>
-                  <th className="text-center">#</th>
+                  <th className="text-center">ISBN</th>
                   <th className="text-center">Title</th>
                   <th className="text-center">Author</th>
                   <th className="text-center">First Published</th>
@@ -110,7 +110,7 @@ const sortedBooks = [...filteredBooks].sort((a, b) => {
               <tbody>
                 {sortedBooks.map((book, index) => (
                   <tr key={book.isbn ? book.isbn[0] : book.title + index} className="table-row">
-                    <td>{index + 1}</td>
+                    <td>{book.isbn ? book.isbn[0] : "N/A"}</td>
                     <td>{book.title}</td>
                     <td>{book.author_name?.join(", ") || "Unknown"}</td>
                     <td>{book.first_publish_year || "N/A"}</td>

@@ -12,6 +12,8 @@ const Table: React.FC<TableProps> = ({ searchQuery }) => {
   const [loading, setLoading] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState<string>(searchQuery);
   const [sortBy, setSortBy] = useState<string>("relevance");
+  const [error, setError] = useState<string | null>(null); 
+
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300);
@@ -22,18 +24,31 @@ const Table: React.FC<TableProps> = ({ searchQuery }) => {
     if (debouncedQuery.trim() === "") {
       setBooks([]);
       setLoading(false);
+      setError(null);
       return;
     }
 
     const formattedQuery = debouncedQuery.trim().replace(/\s+/g, "+");
 
     setLoading(true);
+    setError(null);
+
     fetch(`https://openlibrary.org/search.json?q=${formattedQuery}`)
-      .then((res) => res.json())
-      .then((data: BookResult) => setBooks(data.docs))
-      .catch((err) => console.error("Error fetching books:", err))
-      .finally(() => setLoading(false));
-  }, [debouncedQuery]);
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to fetch books. Please try again later.");
+      }
+      return res.json();
+    })
+    .then((data: BookResult) => {
+      setBooks(data.docs);
+    })
+    .catch((err) => {
+      console.error("Error fetching books:", err);
+      setError("An error occurred while fetching books. Please check your network connection and try again.");
+    })
+    .finally(() => setLoading(false));
+}, [debouncedQuery]);
 
 const filteredBooks = books.filter((book) =>
   book.title.toLowerCase().includes(debouncedQuery.toLowerCase())
@@ -54,6 +69,13 @@ const sortedBooks = [...filteredBooks].sort((a, b) => {
       {loading ? (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
           <Spinner animation="border" />
+          </div>
+      ) : error ? (  // Show error message if an error exists
+        <div className="text-center" style={{ fontSize: "18px", color: "#dc3545" }}>
+          <h3 className="mb-3" style={{ fontWeight: "bold" }}>
+            Error
+          </h3>
+          <p>{error}</p>
         </div>
       ) : sortedBooks.length === 0 ? (
         <div className="text-center" style={{ fontSize: "18px", color: "#6c757d" }}>

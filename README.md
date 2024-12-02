@@ -1,9 +1,6 @@
-# Create a README.md file with the provided content
-
-readme_content = """
 # BookFinder Application
 
-**BookFinder** is a React-based web application that allows users to search for books, view results, and sort them by relevance or publication year. This project uses the Open Library API to fetch book data and provides a clean, responsive interface for displaying the results.
+**BookFinder** is a React-based web application that allows users to search for books, view results, and sort them by relevance or publication year. This project uses the Open Library API to fetch book data and provides a clean, responsive interface for displaying the all results.
 
 ---
 

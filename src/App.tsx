@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './Components/Navbar/Navbar';
+import Table from './Components/Table/Table';
+import React, { useState } from "react";
 
-function App() {
+// Make sure setSearchQuery is typed as a function that takes a string.
+const App: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState<string>(""); // Define the state with a string type
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Navbar setSearchQuery={setSearchQuery} />
+      <Table searchQuery={searchQuery} />
     </div>
   );
-}
+};
 
 export default App;
